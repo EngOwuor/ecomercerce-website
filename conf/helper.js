@@ -3,12 +3,12 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 let conn = new Mysqli({
-    host :'localhost', // IP/domain name 
-    post:'3306', //port, default 3306
-    //socketPath: '/cloudsql/fleet-flame-288817:us-central1:quickstart-instance',
-    user:'mega_user',//'quickstart-user',// username 
-    passwd: 'robert',// 'root'password 
-    db:'mega_shop', //'quickstart-db'
+    //host :'localhost', // IP/domain name 
+    //post:'3306', //port, default 3306
+    socketPath: '/cloudsql/fleet-flame-288817:us-central1:quickstart-instance',
+    user:'quickstart-user',//'mega_user' username 
+    passwd:'root',//password ,
+    db:'quickstart-db'//'mega_shop'
 });
 
 let db = conn.emit(false, '');
