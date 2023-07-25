@@ -15,7 +15,7 @@ app.use(cors({
     allowedHeaders:'Content-Type,Authorization, Origin, x-Requested-With,Accept'
 }))
 app.use(bodyParser.json())
-// parse application/x-www-form-urlencoded 
+// parse application/x-www-form-urlencoded  
 app.use(bodyParser.urlencoded({ extended: false }))
 
 
