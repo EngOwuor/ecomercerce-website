@@ -27,10 +27,10 @@ threadsafe: yes
   #DB_NAME: 'quickstart-db'
 handlers:
   - url: /
-    static_files: dist/ecomercerce-ewbite/index.html
-    upload: dist/ecomercerce-website/index.html
+    static_files: dist/bundle.js
+    upload: dist/bundle.js
   - url: /
-    static_dir: dist/ecomercerce-website
+    static_dir: dist
 
 skip_files:
   - e2e/
