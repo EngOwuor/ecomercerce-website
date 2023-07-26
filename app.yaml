@@ -15,7 +15,7 @@
 runtime: nodejs18
 service: back-end
 api_version: 1
-threadsafe: yes
+
 
 
 # The following env variables may contain sensitive information that grants
