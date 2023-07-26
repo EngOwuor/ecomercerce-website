@@ -25,3 +25,19 @@ threadsafe: yes
   #DB_USER: 'quickstart-user'
   #DB_PASS: 'root'
   #DB_NAME: 'quickstart-db'
+handlers:
+  - url: /
+    static_files: dist/ecomercerce-ewbite/index.html
+    upload: dist/ecomercerce-website/index.html
+  - url: /
+    static_dir: dist/ecomercerce-website
+
+skip_files:
+  - e2e/
+  - node_modules/
+  - src/
+  - ^(.*/)?\..*$
+  - ^(.*/)?.*\.json$
+  - ^(.*/)?.*\.md$
+  - ^(.*/)?.*\.yaml$
+  - ^LICENSE
