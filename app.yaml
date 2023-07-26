@@ -14,7 +14,6 @@
 
 runtime: nodejs18
 service: back-end
-api_version: 1
 
 
 
