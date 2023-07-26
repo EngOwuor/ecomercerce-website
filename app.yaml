@@ -24,10 +24,5 @@ service: back-end
   #DB_USER: 'quickstart-user'
   #DB_PASS: 'root'
   #DB_NAME: 'quickstart-db'
-handlers:
-  - url: /
-    static_files: dist/bundle.js
-    upload: dist/bundle.js
-  - url: /
-    static_dir: dist
+
 
