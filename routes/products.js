@@ -104,7 +104,7 @@ router.get("/delete/:prodId", (req, res) => {
                       status: 'success'
                   });
               } else {
-                  res.status(500).json({status: 'failure', message: 'Cannot delete the product'});
+                  res.status(500).json({status: 'failure',successNum:successNum, message: 'Cannot delete the product'});
             }
         })
         .catch((err) => res.status(500).json(err));
