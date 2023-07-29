@@ -97,14 +97,14 @@ router.get("/delete/:prodId", (req, res) => {
         .table("products")
         .filter({ id: prodId })
         .remove()
-        .then(successNum => {
-              if (successNum ===1) {
+        .then(successRes => {
+              if (successRes.affectedRows === 1) {
                   res.status(200).json({
                       message: `Record deleted with product id ${prodId}`,
                       status: 'success'
                   });
               } else {
-                  res.status(500).json({status: 'failure',successNum:successNum, message: 'Cannot delete the product'});
+                  res.status(500).json({status: 'failure', message: 'Cannot delete the product'});
             }
         })
         .catch((err) => res.status(500).json(err));
