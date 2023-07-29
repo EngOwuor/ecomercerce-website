@@ -89,7 +89,7 @@ router.get('/categories/:catId',(req,res)=>{
 
 })
 
-router.delete("/delete/:prodId", (req, res) => {
+router.get("/delete/:prodId", (req, res) => {
     let prodId = req.params.prodId;
   
     if (!isNaN(prodId)) {
