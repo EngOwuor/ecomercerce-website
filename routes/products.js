@@ -39,6 +39,25 @@ router.get('/',(req,res)=>{
 
 })
 
+router.post("/new",(req,res)=>{
+    let {productname,productdescription, shortdescription,productprice,quantity,category} = req.body;
+    database.table('products')
+    .insert({title:productname,description:productdescription,price:productprice,quantity:quantity,short_desc:shortdescription,cat_id:category})
+    .then(insertObject=>{
+        if(insertObject.insertId > 0){
+            res.json({
+                message:`order successfully created with order id ${newOrderId.insertId}`,
+                success:true,
+                order_id: newOrderId.insertId,
+                products:products
+            })
+        }else{
+            res.json({message:'new order failed while adding order details',success:false})
+        }
+    }).catch(err=>console.log(err))
+    
+})
+
 router.get('/:prodId',(req,res)=>{
 
     let prodId = req.params.prodId;
