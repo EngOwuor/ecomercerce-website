@@ -8,6 +8,8 @@ const app = express();
 const productsRoute = require('./routes/products');
 const ordersRoute = require('./routes/orders'); 
 const authRoute = require('./routes/auth');
+const categoriesRoute = require('./routes/categories')
+const usersRoute = require('./routes/users')
 
 app.use(cors({
     origin:'*',
@@ -27,6 +29,8 @@ app.get('/',(req,res)=>{
 app.use('/api/products',productsRoute);
 app.use('/api/orders',ordersRoute);
 app.use('/api/auth',authRoute);
+app.use('/api/categories',categoriesRoute)
+app.use('/api/users',usersRoute)
 
 const PORT = parseInt(process.env.PORT) || 8080;
 app.listen(PORT, () => {
@@ -38,3 +42,4 @@ process.on('unhandledRejection', err => {
   console.error(err);
   throw err;
 });
+

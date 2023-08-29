@@ -3,8 +3,25 @@ const express = require('express');
 const router = express.Router();
 const {database} = require('../conf/helper');
 
-// Fetch all orders
+
+
 router.get('/',(req,res)=>{
+    database.table('orders')
+    .getAll()
+    .then(orders=>{
+        if (orders.length>0){
+            res.status(200).json({
+                count: orders.length,
+                orders:orders
+            })
+        }else{
+            res.json({message:`no orders  found `})
+        }
+    }).catch(err=>console.log(err))
+})
+
+// Fetch all orders details
+router.get('/details',(req,res)=>{
     database.table('orders_details as od')
     .join([
         {
@@ -34,7 +51,7 @@ router.get('/',(req,res)=>{
     }).catch(err=>console.log(err))
 })
 
-router.get('/:orderId',(req,res)=>{
+router.get('/details/:orderId',(req,res)=>{
 
     const orderId = req.params.orderId;
     //console.log(orderId)
@@ -53,12 +70,12 @@ router.get('/:orderId',(req,res)=>{
             on: 'u.id = o.user_id'
         }
     ])
-    .withFields(['o.id','p.title as name','p.image','p.description','p.price','p.quantity','u.username'])
+    .withFields(['o.id','p.title as name','p.image','p.description','p.price','od.quantity','u.username'])
     .filter({'o.id':orderId})
     .getAll()
     .then(orders=>{
-        console.log(orders)
-        console.log(orders.length)
+        //console.log(orders)
+        //console.log(orders.length)
         if (orders.length>0){
             res.status(200).json({
                 count: orders.length,
@@ -135,6 +152,28 @@ router.post('/new',(req,res)=>{
         .catch(err=>console.log(err))
     }
 
+})
+
+router.post('/edit',(req,res)=>{
+   let {orderId,userId,status} = req.body;
+   database.table('orders')
+   .filter({'orders.id':orderId})
+   .update({Status:status})
+   //.get()
+   .then(orderObj =>{
+    //console.log(orderObj)
+    if(orderObj.changedRows && orderObj.changedRows === 1){
+        res.status(200).json(
+            {message:`order with order id ${orderId} was successfully updated `,
+            success: true}
+            )
+    }else{
+        res.json({message:'order update was not successful',success:false})
+    }
+
+   }).catch(err => console.log(err))
+
+   
 })
 
 // Payment Gateway

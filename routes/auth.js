@@ -56,6 +56,8 @@ router.post('/register', [
         let password = await bcrypt.hash(req.body.password, 10);
         let fname = req.body.fname;
         let lname = req.body.lname;
+        let fphone = req.body.fphone;
+        let sphone = req.body.sphone;
 
         /**
          * ROLE 777 = ADMIN
@@ -65,9 +67,11 @@ router.post('/register', [
             username: username,
             password: password,
             email: email,
+            primary_phone:fphone,
+            secondary_phone:sphone,
             role: 555,
-            lname: lname || null,
-            fname: fname || null
+            lname: lname, //|| null,
+            fname: fname //|| null
         }).then(lastId => {
             console.log('user insert successful')
             console.log(lastId)

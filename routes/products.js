@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const {database} = require("../conf/helper");
 
+const imageUpload = require("../conf/cloudstorage");
+
 router.get('/',(req,res)=>{
     let page = (req.query.page !== undefined && req.query.page !== 0) ? req.query.page : 1; //set the current page number
     let limit = (req.query.limit !== undefined && req.query.limit !== 0) ? req.query.limit : 10; //set the limit per page
@@ -39,17 +41,30 @@ router.get('/',(req,res)=>{
 
 })
 
-router.post("/new",(req,res)=>{
+router.post("/new",imageUpload.multer.single('image'),
+                   imageUpload.sendUploadToGCS,
+   (req,res)=>{
+    console.log(req.file)
+    console.log(req.body)
+    let imageUrl = '';
+    if (req.file && req.file.cloudStoragePublicUrl) {
+        imageUrl = req.file.cloudStoragePublicUrl;
+      }
     let {productname,productdescription, shortdescription,productprice,quantity,category} = req.body;
     database.table('products')
-    .insert({title:productname,description:productdescription,price:productprice,quantity:quantity,short_desc:shortdescription,cat_id:category})
+    .insert({title:productname,
+             image:imageUrl,
+             description:productdescription,
+             price:productprice,
+             quantity:quantity,
+             short_desc:shortdescription,
+             cat_id:category})
     .then(insertObject=>{
         if(insertObject.insertId > 0){
             res.json({
-                message:`order successfully created with order id ${newOrderId.insertId}`,
+                message:`order successfully created with order id ${insertObject.insertId}`,
                 success:true,
-                order_id: newOrderId.insertId,
-                products:products
+                producId: insertObject.insertId
             })
         }else{
             res.json({message:'new order failed while adding order details',success:false})
@@ -133,6 +148,47 @@ router.get("/delete/:prodId", (req, res) => {
         .json({ message: "ID is not a valid number", status: "failure" });
     }
 });
+
+// get all products in a ctegory
+router.post('/category',(req,res)=>{
+    let page = (req.query.page !== undefined && req.query.page !== 0) ? req.query.page : 1; //set the current page number
+    let limit = (req.query.limit !== undefined && req.query.limit !== 0) ? req.query.limit : 10; //set the limit per page
+    
+    let catId = req.body.id;
+    console.log(catId)
+    let startValue;
+    let endValue;
+
+    if (page>0){
+        startValue = page * limit - limit;
+        endValue = page * limit
+    }else{
+        startValue = 0;
+        endValue = 10
+    }
+
+    database.table('products as p')
+    .join([{
+        table:'categories as c',
+        on:'c.id = p.cat_id'
+    }])
+    .slice(startValue,endValue)
+    .withFields(['c.title as category','p.title as name','p.price','p.quantity','p.image','p.id','p.description','p.cat_id'])
+    .filter({cat_id:catId})
+    .sort({id:.1})
+    .getAll()
+    .then(prods=>{
+        if (prods.length>0){
+            res.status(200).json({
+                count: prods.length,
+                products:prods
+            })
+        }else{
+            res.json({message:'no products found'})
+        }
+    }).catch(err=>console.log(err))
+
+})
   
   
   
