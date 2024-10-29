@@ -64,7 +64,7 @@ router.get('/details/:orderId',(req,res)=>{
         {
             table: 'products as p',
             on: 'p.id = od.product_id'
-        },
+        }, 
         {
             table : 'users as u',
             on: 'u.id = o.user_id'

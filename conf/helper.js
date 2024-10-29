@@ -8,17 +8,17 @@ let conn = new Mysqli({
    // user:'robert', //username
     //passwd:'robert',//password 
    // db:'mega_shop'//'mega_shop
-    socketPath: '/cloudsql/fleet-flame-288817:us-central1:quickstart-instance',
+    socketPath: '/cloudsql/fleet-flame-288817:us-central1:quickstart-user',
     user:'quickstart-user',//'mega_user' username 
     passwd:'root',//password ,
-    db:'quickstart-db'//'mega_shop'
+    db:'quickstart-database'//'mega_shop'
     
 });
 
 let db = conn.emit(false, '');
 
 const secret = "1SBz93MsqTs7KgwARcB0I0ihpILIjk3w";
-
+   
 module.exports = {
     database: db,
     secret: secret,
@@ -33,7 +33,7 @@ module.exports = {
                     return next();
                 }
             } catch (err) {
-                return res.status(403).send("Authentication faileds");
+                return res.status(403).send("Authentication failed ");
             }
         } else {
             return res.status(401).send("No authorization header found.");
@@ -77,11 +77,13 @@ module.exports = {
                 req.id = user.id
                 next();
             } else {
-                res.status(401).send("Username or password incorrect");
+                res.status(401).send(" password incorrect");
+                //res.status(401).send("Username or password incorrect");
             }
             
         } else {
-            res.status(401).send("Username or password incorrect");
+            res.status(401).send("No User Found with that email address");
+            //res.status(401).send("Username or password incorrect");
         }
         
         
