@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 
 app.get('/',(req,res)=>{
-    res.send('hey').end()
+    res.send('heyz').end()
 })
 
 app.use('/api/products',productsRoute);
